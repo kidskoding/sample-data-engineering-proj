@@ -37,6 +37,6 @@ jobs:
           --template-file iac/cloudformation/template.yaml \
           --stack-name pokemon-etl-stack \
           --capabilities CAPABILITY_IAM \
-          --s3-bucket pokemon-data-lake-anirudh-2025
+          --s3-bucket pokemon-data-lake-anirudh-2025 \
           --no-confirm-changeset \
           --no-fail-on-empty-changeset
