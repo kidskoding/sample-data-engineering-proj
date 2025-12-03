@@ -1,0 +1,36 @@
+name: Deploy ETL Pipeline to AWS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: debian-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }} 
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install and Setup SAM CLI
+        uses: aws-actions/setup-sam@v2 
+
+      - name: Build Lambda Function
+        run: sam build --template-file iac/cloudformation/template.yaml
+
+      - name: Deploy CloudFormation Stack
+        run: |
+          sam deploy \
+          --template-file iac/cloudformation/template.yaml \
+          --stack-name pokemon-etl-stack \
+          --capabilities CAPABILITY_IAM \
+          --no-confirm-changeset \
+          --no-fail-on-empty-changeset

@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Description: Pokemon Data ETL Pipeline - Deploys a Lambda to fetch data and store it in S3
+
+Globals:
+  Function:
+    Runtime: python3.11
+    MemorySize: 1024
+    Timeout: 15
+    
+Resources:
+  PokemonDataLakeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: pokemon-data-lake-anirudh-2025 
+
+  IngestPokemonStatsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../../src/ 
+      Handler: lambda_function.lambda_handler
+      
+      Policies:
+        - AWSLambdaBasicExecutionRole 
+        - S3WritePolicy:
+            BucketName: !Ref PokemonDataLakeBucket
+            
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref PokemonDataLakeBucket 
+          POKE_API_URL: "https://pokeapi.co/api/v2/pokemon/"
