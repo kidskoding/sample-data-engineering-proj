@@ -13,7 +13,7 @@ Resources:
   PokemonDataLakeBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: pokemon-data-lake-anirudh-2025 
+      BucketName: pokemon-data-lake-anirudh-2025-v2
 
   IngestPokemonStatsFunction:
     Type: AWS::Serverless::Function
