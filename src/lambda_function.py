@@ -6,8 +6,8 @@ import asyncio
 # Asynchronously run ETL pipeline
 async def async_etl():
     async with aiohttp.ClientSession() as session:
-        gen_6_pokemon = range(1, 722)
-        tasks = [extract_pokemon_data(session, p_id) for p_id in gen_6_pokemon]
+        pokemon = range(1, 722)
+        tasks = [extract_pokemon_data(session, p_id) for p_id in pokemon]
         raw_results = await asyncio.gather(*tasks)
         
         transformed_records = [transform_data(r) for r in raw_results if r]
